@@ -26,7 +26,7 @@ pub fn embed_image(input: TokenStream) -> TokenStream {
         let row = &img.as_raw()[row_start..row_start + width];
         let mut byte = 0u8;
         for (i, &pixel) in row.iter().enumerate() {
-            if pixel > 0 {
+            if pixel == 0 {
                 byte |= 1 << (7 - (i % 8));
             }
             if i % 8 == 7 {
