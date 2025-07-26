@@ -15,9 +15,18 @@ Designed as a companion to `escpos-embedded`, this crate processes Images at com
 
 ```rust
 use escpos_embedded::Image;
-use escpos_embed_image::embed_image;
+use escpos_embed_image::{embed_image, embed_images};
 
 static LOGO: Image<'static> = embed_image!("assets/logo.png");
+
+embed_images!(
+    enum Assets {
+        #[pattern("assets/*.png")]
+    }
+);
+
+// Generated enum `Assets` with variants for each matched file
+// Assets::Logo.get_image() -> &'static Image
 ```
 
 ## How it works
