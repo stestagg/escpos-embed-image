@@ -135,7 +135,7 @@ pub fn embed_images(input: TokenStream) -> TokenStream {
         }
 
         impl #enum_ident {
-            pub fn get_image(&self) -> &'static escpos_embedded::Image<'static> {
+            pub const fn get_image(&self) -> &'static escpos_embedded::Image<'static> {
                 match self {
                     #(#arms),*
                 }
