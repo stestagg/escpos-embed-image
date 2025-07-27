@@ -2,13 +2,13 @@
 
 A procedural macro for embedding monochrome, dithered images into ESC/POS printer drivers at compile time.
 
-Designed as a companion to `escpos-embedded`, this crate processes Images at compile time and generates a static `Image<'static>` compatible with the `no_std`, allocation-free printer interface.
+Designed as a companion to `escpos-embedded`, this crate processes Images at compile time and generates a static `Image<&'static [u8]>` compatible with the `no_std`, allocation-free printer interface.
 
 ## Features
 
 - Compile-time image loading and conversion
 - Converts image file to 1-bit dithered format (Bi-level Floyd-Steinberg)
-- Outputs `Image<'static>` struct ready for printing
+- Outputs `Image<&'static [u8]>` struct ready for printing
 - No runtime dependencies
 
 ## Example
@@ -17,7 +17,7 @@ Designed as a companion to `escpos-embedded`, this crate processes Images at com
 use escpos_embedded::Image;
 use escpos_embed_image::{embed_image, embed_images};
 
-static LOGO: Image<'static> = embed_image!("assets/logo.png");
+static LOGO: Image<&'static [u8]> = embed_image!("assets/logo.png");
 
 embed_images!(
     enum Assets {
@@ -26,7 +26,7 @@ embed_images!(
 );
 
 // Generated enum `Assets` with variants for each matched file
-// Assets::Logo.get_image() -> &'static Image
+// Assets::Logo.get_image() -> &'static Image<&'static [u8]>
 ```
 
 ## How it works
