@@ -49,7 +49,7 @@ pub fn embed_image(input: TokenStream) -> TokenStream {
 
     let out = quote! {{
         const DATA: &[u8] = &[ #(#data_tokens),* ];
-        escpos_embedded::Image {
+        ::escpos_embedded::Image {
             width: #width_const,
             height: #height_const,
             data: DATA,
@@ -120,7 +120,7 @@ pub fn embed_images(input: TokenStream) -> TokenStream {
             let rel_path_str = rel_path.to_string_lossy();
 
             consts.push(quote! {
-                static #const_ident: escpos_embedded::Image<&'static [u8]> = embed_image!(#rel_path_str);
+                static #const_ident: ::escpos_embedded::Image<&'static [u8]> = embed_image!(#rel_path_str);
             });
             variants.push(quote! { #variant_ident });
             arms.push(quote! { #enum_ident::#variant_ident => &#const_ident });
@@ -135,7 +135,7 @@ pub fn embed_images(input: TokenStream) -> TokenStream {
         }
 
         impl #enum_ident {
-            pub const fn get_image(&self) -> &'static escpos_embedded::Image<&'static [u8]> {
+            pub const fn get_image(&self) -> &'static ::escpos_embedded::Image<&'static [u8]> {
                 match self {
                     #(#arms),*
                 }
