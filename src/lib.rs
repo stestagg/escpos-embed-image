@@ -59,12 +59,14 @@ pub fn embed_image(input: TokenStream) -> TokenStream {
 }
 
 struct EmbedImagesInput {
+    enum_attrs: Vec<Attribute>,
     enum_ident: Ident,
     patterns: Vec<LitStr>,
 }
 
 impl Parse for EmbedImagesInput {
     fn parse(input: ParseStream) -> syn::Result<Self> {
+        let enum_attrs: Vec<Attribute> = input.call(Attribute::parse_outer)?;
         input.parse::<Token![enum]>()?;
         let enum_ident: Ident = input.parse()?;
         let content;
@@ -83,6 +85,7 @@ impl Parse for EmbedImagesInput {
             }
         }
         Ok(EmbedImagesInput {
+            enum_attrs,
             enum_ident,
             patterns,
         })
@@ -92,6 +95,7 @@ impl Parse for EmbedImagesInput {
 #[proc_macro]
 pub fn embed_images(input: TokenStream) -> TokenStream {
     let EmbedImagesInput {
+        enum_attrs,
         enum_ident,
         patterns,
     } = syn::parse_macro_input!(input as EmbedImagesInput);
@@ -130,6 +134,7 @@ pub fn embed_images(input: TokenStream) -> TokenStream {
     let out = quote! {
         #(#consts)*
 
+        #(#enum_attrs)*
         pub enum #enum_ident {
             #(#variants),*
         }

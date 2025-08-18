@@ -20,6 +20,7 @@ use escpos_embed_image::{embed_image, embed_images};
 static LOGO: Image<&'static [u8]> = embed_image!("assets/logo.png");
 
 embed_images!(
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
     enum Assets {
         #[pattern("assets/*.png")]
     }
